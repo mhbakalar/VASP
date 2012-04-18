@@ -95,8 +95,8 @@ class Experiment:
                 recon = TimeReconstruction(record)
                 data = recon.density_vs_time(len(record))
                 pyplot.plot(data[0], data[1])
-                (ar,br)=polyfit(data[0],data[1],1)
-                slopes[i, j] = ar
+                # (ar,br)=polyfit(data[0],data[1],1)
+                # slopes[i, j] = ar
                 j += 1
             j = 0
             i += 1
@@ -111,7 +111,7 @@ class Experiment:
         slope_fname = os.path.join(Experiment.datafolder, slopename)
         sp.savetxt(slopename, slopes)
 
-        # slope vs concentration
+        ''' slope vs concentration
         pyplot.figure(2)
         pyplot.plot(Experiment.conc, slopes[0])
         pyplot.plot(Experiment.conc, slopes[1])
@@ -121,8 +121,9 @@ class Experiment:
         pyplot.xscale('log')
         pyplot.xlabel('Concentration')
         pyplot.ylabel('Average Growth Rate')
-        
+        '''
         pyplot.show()
+
         
     @staticmethod
     def Log(line):

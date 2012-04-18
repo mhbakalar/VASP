@@ -88,13 +88,20 @@ class Experiment:
         j = 0
         pyplot.figure(1)
         for sim, fname in Experiment.runs:
-            for conc in Experiment.conc:
+            for conc in Experiment.conc[0:6]:
+                print 'Concentration: ', str(conc)
                 fname_conc = fname + '_c=' + str(conc)
                 pth = os.path.join(Experiment.datafolder, fname_conc)
                 record = SimulationRecord(pth, sim, 'r')
                 recon = TimeReconstruction(record)
-                data = recon.constant_interval(len(record))
-                pyplot.plot(data[0], data[1])
+                data = recon.length_vs_time()
+                if fname == 'processive.txt':
+                    color = 'r'
+                elif fname == 'non_processive.txt':
+                    color = 'g'
+                else:
+                    color = 'b'
+                pyplot.plot(data[0], data[1], color)
                 (ar,br)=polyfit(data[0],data[1],1)
                 slopes[i, j] = ar
                 j += 1
@@ -118,11 +125,12 @@ class Experiment:
         pyplot.plot(Experiment.conc, slopes[2])
         pyplot.legend(('Processive', 'Non-processive', 'Detach'),
                       'upper left', shadow=True, fancybox=False)
-        pyplot.xscale('log')
+        # pyplot.xscale('log')
         pyplot.xlabel('Concentration')
         pyplot.ylabel('Average Growth Rate')
         
         pyplot.show()
+        return slopes
         
     @staticmethod
     def Log(line):
